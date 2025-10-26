@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shukei</title>
+  <meta name="description" content="Harvest your activity from Google Calendar">
+  <meta property="og:title" content="Shukei">
+  <meta property="og:description" content="Harvest your activity from Google Calendar">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Shukei">
+  <meta name="twitter:description" content="Harvest your activity from Google Calendar">
+  <style>
+    body {
+      font-family:
+        "Osaka",
+        "MS PGothic",
+        sans-serif;
+      margin: 16px;
+      line-height: 1.6;
+      background-color: #C0C0C0;
+      color: #000000;
+    }
+
+    h2,
+    h3 {
+      margin-top: 1.5em;
+    }
+
+    .anchor {
+      margin-right: 0.2em;
+    }
+
+    figure {
+      display: table;
+      margin-inline: auto;
+    }
+
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 4px;
+      margin: 0 4px;
+      border-radius: 4px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    table {
+      border-collapse: collapse;
+      background-color: #ffffff;
+      margin-top: 20px;
+      caption-side: bottom;
+      margin-inline: auto;
+    }
+
+    th,
+    td {
+      border: 1px solid #cccccc;
+      padding: 4px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+
+    .examples {
+      h3 {
+        a:not(.anchor) {
+          margin-left: 16px;
+          font-size: 1rem;
+        }
+      }
+
+      dl {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        column-gap: 1em;
+        padding: 8px;
+        background-color: #ffffff;
+      }
+
+      dt {
+        font-weight: bold;
+        text-align: right;
+        margin: 0;
+        overflow-wrap: anywhere;
+      }
+
+      dd {
+        margin: 0;
+        overflow-wrap: anywhere;
+      }
+    }
+
+    .faq {
+      dt:before {
+        content: 'Q. ';
+      }
+
+      dd:before {
+        content: 'A. ';
+      }
+    }
+
+    a[target="_blank"]::before {
+      content: '» ';
+    }
+  </style>
+</head>
+
+<body>
+  <h1 id="top"><a class="anchor" href="/">#</a>Shukei（集計）</h1>
+  <p>Google Calendar から「タグ」を収集して、活動時間を集計します。</p>
+  <figure>
+    <img src="./calendar-event.webp" width="330" height="234" loading="lazy" alt="[SHUKEI] というタグをつけたカレンダーの予定"
+      style="width: 160px; height: auto;">
+    <figcaption><code>SHUKEI</code>タグを含む予定</figcaption>
+  </figure>
+  <h2 id="how-to-join"><a class="anchor" href="#how-to-join">##</a>How to Join</h2>
+  <p><a href="https://app.shukei.uni.ba" target="_blank">https://app.shukei.uni.ba</a> からサインアップすると集計が始まります。</p>
+  <h2 id="data-usage"><a class="anchor" href="#data-usage">##</a>Data Usage</h2>
+  <p>
+    集計された活動時間は Web API 経由でアクセスできます。
+    <br />
+    以下の 3 種の視点をクエリパラメータとして指定してください。
+  </p>
+  <ul>
+    <li>誰の活動／どのタグの時間を取得したいか？ - <code>users</code>, <code>filterUsers</code>, <code>tags</code>, <code>filterTags</code>
+    </li>
+    <li>いつからいつまでの範囲を取得したいか？ - <code>since</code>, <code>until</code></li>
+    <li>集計の単位（日・週・月）は何か？ - <code>interval</code></li>
+  </ul>
+  <p>
+    これらの組み合わせに対応する「ユーザ x 期間」「タグ x 期間」のテーブル構造のデータを返します。
+    <br />
+    テーブルのセルには活動時間の集計値が入ります。
+  </p>
+  <section class="examples">
+    <h3 id="example-1">
+      <a class="anchor" href="#example-1">###</a>
+      例 1：foo と bar の、今年の活動
+      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/user?users=foo@example.com,bar@example.com&since=2025-01-01&until=2026-01-01&interval=month"
+        target="_blank">
+        サンプルリクエスト
+      </a>
+    </h3>
+    <p><code>GET /api/calendar-events/rollups/user</code>を使います。</p>
+    <dl>
+      <dt>users</dt>
+      <dd>foo@example.com, bar@example.com</dd>
+      <dt>since</dt>
+      <dd>2025-01-01</dd>
+      <dt>until</dt>
+      <dd>2026-01-01</dd>
+      <dt>interval</dt>
+      <dd>month</dd>
+    </dl>
+    <p>foo と bar の活動時間が月別に集計されました。</p>
+    <table>
+      <caption>
+        ユーザ x 期間（月）の表
+      </caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th>2025-01-01</th>
+          <th>2025-02-01</th>
+          <th>2025-03-01</th>
+          <th>...</th>
+          <th>2025-12-01</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>foo@example.com</td>
+          <td>2000</td>
+          <td>1800</td>
+          <td>2200</td>
+          <td>...</td>
+          <td>2100</td>
+        </tr>
+        <tr>
+          <td>bar@example.com</td>
+          <td>1500</td>
+          <td>1600</td>
+          <td>1700</td>
+          <td>...</td>
+          <td>1800</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>月初の日付がキーとして使われます。</li>
+      <li><code>until</code>で指定した日は含まれません。</li>
+    </ul>
+    <h3 id="example-2">
+      <a class="anchor" href="#example-2">###</a>
+      例 2：foo と bar の、SHUKEI に対する今週の活動
+      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/user?users=foo@example.com,bar@example.com&since=2025-09-01&until=2025-09-08&interval=day&filterTags=SHUKEI"
+        target="_blank">
+        サンプルリクエスト
+      </a>
+    </h3>
+    <p>同様に <code>GET /api/calendar-events/rollups/user</code>を使います。</p>
+    <dl>
+      <dt>users</dt>
+      <dd>foo@example.com, bar@example.com</dd>
+      <dt>filterTags</dt>
+      <dd>SHUKEI</dd>
+      <dt>since</dt>
+      <dd>2025-09-01</dd>
+      <dt>until</dt>
+      <dd>2025-09-08</dd>
+      <dt>interval</dt>
+      <dd>day</dd>
+    </dl>
+    <p>foo と bar の活動時間が日別に集計されました。</p>
+    <table>
+      <caption>
+        ユーザ x 期間（日）の表
+      </caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th>2025-09-01</th>
+          <th>2025-09-02</th>
+          <th>2025-09-03</th>
+          <th>...</th>
+          <th>2025-09-07</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>foo@example.com</td>
+          <td>100</td>
+          <td>150</td>
+          <td>200</td>
+          <td>...</td>
+          <td>120</td>
+        </tr>
+        <tr>
+          <td>bar@example.com</td>
+          <td>80</td>
+          <td>90</td>
+          <td>110</td>
+          <td>...</td>
+          <td>130</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li><code>filterTags</code>に指定されたタグに関する時間のみが集計されます。</li>
+      <li>例 1 と同様、<code>user</code>のエンドポイントではユーザが縦の行になり、誰を選ぶかは <code>users</code> で指定し、集計範囲を <code>filterTags</code>
+        で指定するイメージです。
+      </li>
+    </ul>
+    <h3 id="example-3">
+      <a class="anchor" href="#example-3">###</a>
+      例 3：活動 SHUKEI と活動 UNIBA の、今年の活動
+      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/tag?tags=SHUKEI,UNIBA&since=2025-01-01&until=2026-01-01&interval=month"
+        target="_blank">
+        サンプルリクエスト
+      </a>
+    </h3>
+    <p><code>GET /api/calendar-events/rollups/tag</code>を使います。</p>
+    <dl>
+      <dt>tags</dt>
+      <dd>SHUKEI, UNIBA</dd>
+      <dt>since</dt>
+      <dd>2025-01-01</dd>
+      <dt>until</dt>
+      <dd>2026-01-01</dd>
+      <dt>interval</dt>
+      <dd>month</dd>
+    </dl>
+    <p>SHUKEI と UNIBA の活動時間が月別に集計されました。</p>
+    <table>
+      <caption>
+        タグ x 期間（月）の表
+      </caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th>2025-01-01</th>
+          <th>2025-02-01</th>
+          <th>2025-03-01</th>
+          <th>...</th>
+          <th>2025-12-01</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>SHUKEI</td>
+          <td>1200</td>
+          <td>1300</td>
+          <td>1400</td>
+          <td>...</td>
+          <td>1500</td>
+        </tr>
+        <tr>
+          <td>UNIBA</td>
+          <td>2300</td>
+          <td>2100</td>
+          <td>2500</td>
+          <td>...</td>
+          <td>2400</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>
+        例 1, 2 と異なり、<code>tag</code>のエンドポイントでは、縦の行がタグになります。
+      </li>
+      <li>横の列が時系列なのは変わりません。</li>
+    </ul>
+    <h3 id="example-4">
+      <a class="anchor" href="#example-4">###</a>
+      例 4：活動 SHUKEI と活動 UNIBA の、foo と bar による今週の活動
+      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/tag?tags=SHUKEI,UNIBA&since=2025-09-01&until=2025-09-08&interval=day&filterUsers=foo@example.com,bar@example.com"
+        target="_blank">
+        サンプルリクエスト
+      </a>
+    </h3>
+    <p>同様に <code>GET /api/calendar-events/rollups/tag</code>を使います。</p>
+    <dl>
+      <dt>tags</dt>
+      <dd>SHUKEI, UNIBA</dd>
+      <dt>filterUsers</dt>
+      <dd>foo@example.com, bar@example.com</dd>
+      <dt>since</dt>
+      <dd>2025-09-01</dd>
+      <dt>until</dt>
+      <dd>2025-09-08</dd>
+      <dt>interval</dt>
+      <dd>day</dd>
+    </dl>
+    <p>SHUKEI と UNIBA の活動時間が日別に集計されました。</p>
+    <table>
+      <caption>
+        タグ x 期間（日）の表
+      </caption>
+      <thead>
+        <tr>
+          <th></th>
+          <th>2025-09-01</th>
+          <th>2025-09-02</th>
+          <th>2025-09-03</th>
+          <th>...</th>
+          <th>2025-09-07</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>SHUKEI</td>
+          <td>180</td>
+          <td>240</td>
+          <td>310</td>
+          <td>...</td>
+          <td>250</td>
+        </tr>
+        <tr>
+          <td>UNIBA</td>
+          <td>150</td>
+          <td>160</td>
+          <td>140</td>
+          <td>...</td>
+          <td>170</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li><code>filterUsers</code>に指定されたユーザに関する時間のみが集計されます。</li>
+    </ul>
+    <h3 id="example-5">
+      <a class="anchor" href="#example-5">###</a>
+      🔒 予定一覧の取得
+    </h3>
+    <p>集計値ではなく、予定情報そのものの一覧を返す API もありますが、こちらは認証が必要です。</p>
+  </section>
+  <section class="faq">
+    <h2 id="faq">
+      <a class="anchor" href="#faq">##</a>
+      FAQ
+    </h2>
+    <dl>
+      <dt>認証なしでアクセスできる API は危なくないの？</dt>
+      <dd>活動時間の集計テーブルを返す API
+        のパラメータは、取得したいユーザやタグを直接指定する必要があり、それに関連するデータのみが集計されます。また、登録されているタグ一覧やユーザ一覧を取得する方法はありません。つまり「自分がそもそも把握していないユーザのメールアドレスやタグが見えてしまう」ことはありません。仮に総当たり攻撃等でメールアドレスやタグを特定したとしても、集計値以外の情報は得られません。
+      </dd>
+      <dt>どんな予定がデータベースに保存されるの？</dt>
+      <dd>ブラケット<code>[ ]</code>で囲まれたタグをタイトルに含む（終日でない）予定のみが保存されます。
+    </dl>
+  </section>
+</body>
+
+</html>
