@@ -82,7 +82,7 @@
       }
 
       dt {
-        font-weight: bold;
+        font-weight: bolder;
         text-align: right;
         margin: 0;
         overflow-wrap: anywhere;
@@ -95,12 +95,21 @@
     }
 
     .faq {
+      dt {
+        margin-top: 16px;
+        font-weight: bolder;
+      }
+
+      dt:first-child {
+        margin-top: 0;
+      }
+
       dt:before {
         content: 'Q. ';
       }
 
-      dd:before {
-        content: 'A. ';
+      dd {
+        margin: 8px 0 0 0;
       }
     }
 
@@ -119,7 +128,11 @@
     <figcaption><code>SHUKEI</code>タグを含む予定</figcaption>
   </figure>
   <h2 id="how-to-join"><a class="anchor" href="#how-to-join">##</a>How to Join</h2>
-  <p><a href="https://app.shukei.uni.ba" target="_blank">https://app.shukei.uni.ba</a> からサインアップすると集計が始まります。</p>
+  <p>
+    ⚠️ @uniba.jp アカウントを持つユーザのみが利用可能な β 版です。<br />
+    <a href="https://app.shukei.uni.ba" target="_blank">https://app.shukei.uni.ba</a>
+    からサインアップしてください。
+  </p>
   <h2 id="data-usage"><a class="anchor" href="#data-usage">##</a>Data Usage</h2>
   <p>
     集計された活動時間は Web API 経由でアクセスできます。
@@ -377,7 +390,8 @@
       <a class="anchor" href="#example-5">###</a>
       🔒 予定一覧の取得
     </h3>
-    <p>集計値ではなく、予定情報そのものの一覧を返す API もありますが、こちらは認証が必要です。</p>
+    <p>集計値ではなく、予定情報そのものの一覧を返す API もあります。<br />
+      認証が必要で、現在試験運用中です。</p>
   </section>
   <section class="faq">
     <h2 id="faq">
@@ -385,12 +399,23 @@
       FAQ
     </h2>
     <dl>
-      <dt>認証なしでアクセスできる API は危なくないの？</dt>
-      <dd>活動時間の集計テーブルを返す API
-        のパラメータは、取得したいユーザやタグを直接指定する必要があり、それに関連するデータのみが集計されます。また、登録されているタグ一覧やユーザ一覧を取得する方法はありません。つまり「自分がそもそも把握していないユーザのメールアドレスやタグが見えてしまう」ことはありません。仮に総当たり攻撃等でメールアドレスやタグを特定したとしても、集計値以外の情報は得られません。
-      </dd>
       <dt>どんな予定がデータベースに保存されるの？</dt>
-      <dd>ブラケット<code>[ ]</code>で囲まれたタグをタイトルに含む（終日でない）予定のみが保存されます。
+      <dd>
+        ブラケット<code>[ ]</code>で囲まれたタグをタイトルに含む、終日でない予定のみが保存されます。<br />
+        タイトルからタグを削除した場合、データベース上のレコードも削除されます。
+      <dt>認証なしでアクセスできる API もある？</dt>
+      <dd>
+        はい、活動時間の集計テーブルを返す API は認証が不要です。<br />
+        タグ一覧やユーザ一覧など、自分が知っている & 直接指定した情報以外を取得する方法はありません。<br />
+        したがって「自分がそもそも把握していないユーザのメールアドレスやタグが見えてしまう」ことはありません。
+      </dd>
+      <dt>問い合わせはどこへ？</dt>
+      <dd>
+        <a href="https://github.com/uniba-commons/shukei.uni.ba/issues" target="_blank">GitHub</a>
+        または
+        <a href="https://discord.gg/gy2EZaWe2E" target="_blank">Discord</a>
+        までお願いします。
+      </dd>
     </dl>
   </section>
 </body>
