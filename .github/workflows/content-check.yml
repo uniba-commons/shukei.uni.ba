@@ -19,8 +19,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           DATE=$(date +%Y-%m-%d)
-          sed '1,/^---$/d' .github/ISSUE_TEMPLATE/content-check.md | gh issue create \
+          BODY=$(printf '@claude\n\n%s' "$(sed '1,/^---$/d' .github/ISSUE_TEMPLATE/content-check.md)")
+          echo "${BODY}" | gh issue create \
             --title "Scheduled content check ${DATE}" \
             --body-file - \
             --label "documentation" \
-            --assignee "copilot"
+            --assignee "hitsujiwool"
