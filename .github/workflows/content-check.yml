@@ -19,7 +19,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           DATE=$(date +%Y-%m-%d)
-          gh issue create \
+          sed '1,/^---$/d' .github/ISSUE_TEMPLATE/content-check.md | gh issue create \
             --title "コンテンツ定期チェック ${DATE}" \
-            --template "Content Check" \
+            --body-file - \
             --label "documentation"
