@@ -130,14 +130,14 @@
   <h2 id="how-to-join"><a class="anchor" href="#how-to-join">##</a>How to Join</h2>
   <p>
     ⚠️ @uniba.jp アカウントを持つユーザのみが利用可能な β 版です。<br />
-    <a href="https://app.shukei.uni.ba" target="_blank">https://app.shukei.uni.ba</a>
+    <a href="https://app.shukei.uni.ba" target="_blank" rel="noopener noreferrer">https://app.shukei.uni.ba</a>
     からサインアップしてください。
   </p>
   <h2 id="data-usage"><a class="anchor" href="#data-usage">##</a>Data Usage</h2>
   <p>
     集計された活動時間は Web API 経由でアクセスできます。
     <br />
-    <a href="https://app.shukei.uni.ba/api/openapi.json" target="_blank">OpenAPI 形式の仕様書</a>もあります。
+    <a href="https://app.shukei.uni.ba/api/openapi.json" target="_blank" rel="noopener noreferrer">OpenAPI 形式の仕様書</a>もあります。
   </p>
   <h3 id="usage-basics">
     <a class="anchor" href="#usage-basics">###</a>
@@ -150,6 +150,7 @@
     </li>
     <li>いつからいつまでの範囲を取得したいか？ - <code>since</code>, <code>until</code></li>
     <li>集計の単位（日・週・月）は何か？ - <code>interval</code></li>
+    <li>集計値の時間単位は何か？ - <code>units</code>（<code>minutes</code> または <code>hours</code>、デフォルト: <code>minutes</code>）</li>
   </ul>
   <p>
     これらの組み合わせに対応する「ユーザ x 期間」「タグ x 期間」のテーブル構造のデータを返します。
@@ -161,7 +162,7 @@
       <a class="anchor" href="#example-1">###</a>
       例 1：foo と bar の、今年の活動
       <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/user?users=foo@example.com,bar@example.com&since=2025-01-01&until=2026-01-01&interval=month"
-        target="_blank">
+        target="_blank" rel="noopener noreferrer">
         サンプルリクエスト
       </a>
     </h3>
@@ -213,12 +214,13 @@
     <ul>
       <li>月初の日付がキーとして使われます。</li>
       <li><code>until</code>で指定した日は含まれません。</li>
+      <li>セルの値は <code>units</code> パラメータで指定した単位（デフォルト: 分）です。</li>
     </ul>
     <h3 id="example-2">
       <a class="anchor" href="#example-2">###</a>
       例 2：foo と bar の、SHUKEI に対する今週の活動
       <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/user?users=foo@example.com,bar@example.com&since=2025-09-01&until=2025-09-08&interval=day&filterTags=SHUKEI"
-        target="_blank">
+        target="_blank" rel="noopener noreferrer">
         サンプルリクエスト
       </a>
     </h3>
@@ -279,7 +281,7 @@
       <a class="anchor" href="#example-3">###</a>
       例 3：活動 SHUKEI と活動 UNIBA の、今年の活動
       <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/tag?tags=SHUKEI,UNIBA&since=2025-01-01&until=2026-01-01&interval=month"
-        target="_blank">
+        target="_blank" rel="noopener noreferrer">
         サンプルリクエスト
       </a>
     </h3>
@@ -338,7 +340,7 @@
       <a class="anchor" href="#example-4">###</a>
       例 4：活動 SHUKEI と活動 UNIBA の、foo と bar による今週の活動
       <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/tag?tags=SHUKEI,UNIBA&since=2025-09-01&until=2025-09-08&interval=day&filterUsers=foo@example.com,bar@example.com"
-        target="_blank">
+        target="_blank" rel="noopener noreferrer">
         サンプルリクエスト
       </a>
     </h3>
@@ -392,6 +394,24 @@
     <ul>
       <li><code>filterUsers</code>に指定されたユーザに関する時間のみが集計されます。</li>
     </ul>
+    <h3 id="example-flat">
+      <a class="anchor" href="#example-flat">###</a>
+      フラット形式での取得
+      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/user/flat?users=foo@example.com,bar@example.com&since=2025-09-01&until=2025-09-08&interval=day"
+        target="_blank" rel="noopener noreferrer">
+        サンプルリクエスト
+      </a>
+    </h3>
+    <p>
+      テーブル形式ではなく、フラットなリスト形式でデータを取得したい場合は、
+      <code>GET /api/calendar-events/rollups/user/flat</code> または
+      <code>GET /api/calendar-events/rollups/tag/flat</code> を使います。<br />
+      クエリパラメータは通常のエンドポイントと同じです。
+    </p>
+    <p>
+      レスポンスは 2 次元のテーブルではなく、各セルを個別のオブジェクトとして並べたフラットな配列になります。
+      集計済みデータをスプレッドシートや外部ツールに読み込む際に便利です。
+    </p>
     <h3 id="example-5">
       <a class="anchor" href="#example-5">###</a>
       🔒 予定一覧の取得
@@ -409,6 +429,7 @@
       <dd>
         ブラケット<code>[ ]</code>で囲まれたタグをタイトルに含む、終日でない予定のみが保存されます。<br />
         タイトルからタグを削除した場合、データベース上のレコードも削除されます。
+      </dd>
       <dt>認証なしでアクセスできる API もある？</dt>
       <dd>
         はい、活動時間の集計テーブルを返す API は認証が不要です。<br />
@@ -417,9 +438,9 @@
       </dd>
       <dt>問い合わせはどこへ？</dt>
       <dd>
-        <a href="https://github.com/uniba-commons/shukei.uni.ba/issues" target="_blank">GitHub</a>
+        <a href="https://github.com/uniba-commons/shukei.uni.ba/issues" target="_blank" rel="noopener noreferrer">GitHub</a>
         または
-        <a href="https://discord.gg/gy2EZaWe2E" target="_blank">Discord</a>
+        <a href="https://discord.gg/gy2EZaWe2E" target="_blank" rel="noopener noreferrer">Discord</a>
         までお願いします。
       </dd>
     </dl>
