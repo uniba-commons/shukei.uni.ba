@@ -20,6 +20,7 @@ jobs:
         run: |
           DATE=$(date +%Y-%m-%d)
           sed '1,/^---$/d' .github/ISSUE_TEMPLATE/content-check.md | gh issue create \
-            --title "コンテンツ定期チェック ${DATE}" \
+            --title "Scheduled content check ${DATE}" \
             --body-file - \
-            --label "documentation"
+            --label "documentation" \
+            --assignee "copilot"
