@@ -150,7 +150,7 @@
     </li>
     <li>いつからいつまでの範囲を取得したいか？ - <code>since</code>, <code>until</code></li>
     <li>集計の単位（日・週・月）は何か？ - <code>interval</code></li>
-    <li>集計値の時間単位は何か？ - <code>units</code>（<code>minutes</code> または <code>hours</code>、デフォルト: <code>minutes</code>）</li>
+    <li>集計値の時間単位は何か？ - <code>units</code></li>
   </ul>
   <p>
     これらの組み合わせに対応する「ユーザ x 期間」「タグ x 期間」のテーブル構造のデータを返します。
@@ -176,6 +176,8 @@
       <dd>2026-01-01</dd>
       <dt>interval</dt>
       <dd>month</dd>
+      <dt>units</dt>
+      <dd>minutes</dd>
     </dl>
     <p>foo と bar の活動時間が月別に集計されました。</p>
     <table>
@@ -214,7 +216,7 @@
     <ul>
       <li>月初の日付がキーとして使われます。</li>
       <li><code>until</code>で指定した日は含まれません。</li>
-      <li>セルの値は <code>units</code> パラメータで指定した単位（デフォルト: 分）です。</li>
+      <li>セルの値の単位は <code>units</code> パラメータに従います。</li>
     </ul>
     <h3 id="example-2">
       <a class="anchor" href="#example-2">###</a>
@@ -236,6 +238,8 @@
       <dd>2025-09-08</dd>
       <dt>interval</dt>
       <dd>day</dd>
+      <dt>units</dt>
+      <dd>minutes</dd>
     </dl>
     <p>foo と bar の活動時間が日別に集計されました。</p>
     <table>
@@ -295,6 +299,8 @@
       <dd>2026-01-01</dd>
       <dt>interval</dt>
       <dd>month</dd>
+      <dt>units</dt>
+      <dd>hours</dd>
     </dl>
     <p>SHUKEI と UNIBA の活動時間が月別に集計されました。</p>
     <table>
@@ -314,19 +320,19 @@
       <tbody>
         <tr>
           <td>SHUKEI</td>
-          <td>1200</td>
-          <td>1300</td>
-          <td>1400</td>
+          <td>20.5</td>
+          <td>21.75</td>
+          <td>23.25</td>
           <td>...</td>
-          <td>1500</td>
+          <td>24.5</td>
         </tr>
         <tr>
           <td>UNIBA</td>
-          <td>2300</td>
-          <td>2100</td>
-          <td>2500</td>
+          <td>38.25</td>
+          <td>35.5</td>
+          <td>41.75</td>
           <td>...</td>
-          <td>2400</td>
+          <td>40.25</td>
         </tr>
       </tbody>
     </table>
@@ -356,6 +362,8 @@
       <dd>2025-09-08</dd>
       <dt>interval</dt>
       <dd>day</dd>
+      <dt>units</dt>
+      <dd>hours</dd>
     </dl>
     <p>SHUKEI と UNIBA の活動時間が日別に集計されました。</p>
     <table>
@@ -375,19 +383,19 @@
       <tbody>
         <tr>
           <td>SHUKEI</td>
-          <td>180</td>
-          <td>240</td>
-          <td>310</td>
+          <td>3.25</td>
+          <td>4.5</td>
+          <td>5.75</td>
           <td>...</td>
-          <td>250</td>
+          <td>4.25</td>
         </tr>
         <tr>
           <td>UNIBA</td>
-          <td>150</td>
-          <td>160</td>
-          <td>140</td>
+          <td>2.5</td>
+          <td>2.75</td>
+          <td>2.25</td>
           <td>...</td>
-          <td>170</td>
+          <td>3.5</td>
         </tr>
       </tbody>
     </table>
