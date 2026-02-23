@@ -14,9 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # GITHUB_TOKEN で作成した Issue は無限ループ防止により他のワークフローをトリガーしない。
+      # claude.yml を起動させるため PAT を使用する。
       - name: Create content check issue
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.ISSUE_PAT }}
         run: |
           DATE=$(date +%Y-%m-%d)
           BODY=$(printf '@claude\n\n%s' "$(sed '1,/^---$/d' .github/ISSUE_TEMPLATE/content-check.md)")
