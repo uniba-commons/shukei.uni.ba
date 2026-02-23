@@ -143,7 +143,7 @@
     <a class="anchor" href="#usage-basics">###</a>
     基本的な考え方
   </h3>
-  <p>以下の 3 種の視点をクエリパラメータとして指定してください。</p>
+  <p>以下の 4 種の視点をクエリパラメータとして指定してください。</p>
   <ul>
     <li>誰の活動／どのタグの時間を取得したいか？ - <code>users</code>, <code>filterUsers</code>, <code>tags</code>,
       <code>filterTags</code>
@@ -161,7 +161,7 @@
     <h3 id="example-1">
       <a class="anchor" href="#example-1">###</a>
       例 1：foo と bar の、今年の活動
-      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/user?users=foo@example.com,bar@example.com&since=2025-01-01&until=2026-01-01&interval=month"
+      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/user?users=foo@example.com,bar@example.com&since=2025-01-01&until=2026-01-01&interval=month&units=minutes"
         target="_blank" rel="noopener noreferrer">
         サンプルリクエスト
       </a>
@@ -221,7 +221,7 @@
     <h3 id="example-2">
       <a class="anchor" href="#example-2">###</a>
       例 2：foo と bar の、SHUKEI に対する今週の活動
-      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/user?users=foo@example.com,bar@example.com&since=2025-09-01&until=2025-09-08&interval=day&filterTags=SHUKEI"
+      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/user?users=foo@example.com,bar@example.com&since=2025-09-01&until=2025-09-08&interval=day&filterTags=SHUKEI&units=minutes"
         target="_blank" rel="noopener noreferrer">
         サンプルリクエスト
       </a>
@@ -284,7 +284,7 @@
     <h3 id="example-3">
       <a class="anchor" href="#example-3">###</a>
       例 3：活動 SHUKEI と活動 UNIBA の、今年の活動
-      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/tag?tags=SHUKEI,UNIBA&since=2025-01-01&until=2026-01-01&interval=month"
+      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/tag?tags=SHUKEI,UNIBA&since=2025-01-01&until=2026-01-01&interval=month&units=hours"
         target="_blank" rel="noopener noreferrer">
         サンプルリクエスト
       </a>
@@ -344,8 +344,8 @@
     </ul>
     <h3 id="example-4">
       <a class="anchor" href="#example-4">###</a>
-      例 4：活動 SHUKEI と活動 UNIBA の、foo と bar による今週の活動
-      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/tag?tags=SHUKEI,UNIBA&since=2025-09-01&until=2025-09-08&interval=day&filterUsers=foo@example.com,bar@example.com"
+      例 4：活動 SHUKEI と活動 UNIBA の、foo と bar による今月の活動
+      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/tag?tags=SHUKEI,UNIBA&since=2025-09-01&until=2025-10-01&interval=week&filterUsers=foo@example.com,bar@example.com&units=hours"
         target="_blank" rel="noopener noreferrer">
         サンプルリクエスト
       </a>
@@ -359,43 +359,43 @@
       <dt>since</dt>
       <dd>2025-09-01</dd>
       <dt>until</dt>
-      <dd>2025-09-08</dd>
+      <dd>2025-10-01</dd>
       <dt>interval</dt>
-      <dd>day</dd>
+      <dd>week</dd>
       <dt>units</dt>
       <dd>hours</dd>
     </dl>
-    <p>SHUKEI と UNIBA の活動時間が日別に集計されました。</p>
+    <p>SHUKEI と UNIBA の活動時間が週別に集計されました。</p>
     <table>
       <caption>
-        タグ x 期間（日）の表
+        タグ x 期間（週）の表
       </caption>
       <thead>
         <tr>
           <th></th>
           <th>2025-09-01</th>
-          <th>2025-09-02</th>
-          <th>2025-09-03</th>
-          <th>...</th>
-          <th>2025-09-07</th>
+          <th>2025-09-08</th>
+          <th>2025-09-15</th>
+          <th>2025-09-22</th>
+          <th>2025-09-29</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>SHUKEI</td>
+          <td>12.5</td>
+          <td>15.75</td>
+          <td>14.25</td>
+          <td>16.5</td>
           <td>3.25</td>
-          <td>4.5</td>
-          <td>5.75</td>
-          <td>...</td>
-          <td>4.25</td>
         </tr>
         <tr>
           <td>UNIBA</td>
-          <td>2.5</td>
-          <td>2.75</td>
-          <td>2.25</td>
-          <td>...</td>
-          <td>3.5</td>
+          <td>18.75</td>
+          <td>20.25</td>
+          <td>19.5</td>
+          <td>21.75</td>
+          <td>4.5</td>
         </tr>
       </tbody>
     </table>
