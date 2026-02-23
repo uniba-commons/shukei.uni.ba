@@ -150,6 +150,7 @@
     </li>
     <li>いつからいつまでの範囲を取得したいか？ - <code>since</code>, <code>until</code></li>
     <li>集計の単位（日・週・月）は何か？ - <code>interval</code></li>
+    <li>集計値の時間単位は何か？ - <code>units</code>（<code>minutes</code> または <code>hours</code>、デフォルト: <code>minutes</code>）</li>
   </ul>
   <p>
     これらの組み合わせに対応する「ユーザ x 期間」「タグ x 期間」のテーブル構造のデータを返します。
@@ -213,6 +214,7 @@
     <ul>
       <li>月初の日付がキーとして使われます。</li>
       <li><code>until</code>で指定した日は含まれません。</li>
+      <li>セルの値は <code>units</code> パラメータで指定した単位（デフォルト: 分）です。</li>
     </ul>
     <h3 id="example-2">
       <a class="anchor" href="#example-2">###</a>
@@ -392,6 +394,24 @@
     <ul>
       <li><code>filterUsers</code>に指定されたユーザに関する時間のみが集計されます。</li>
     </ul>
+    <h3 id="example-flat">
+      <a class="anchor" href="#example-flat">###</a>
+      フラット形式での取得
+      <a href="https://app.shukei.uni.ba/api/calendar-events/rollups/user/flat?users=foo@example.com,bar@example.com&since=2025-09-01&until=2025-09-08&interval=day"
+        target="_blank" rel="noopener noreferrer">
+        サンプルリクエスト
+      </a>
+    </h3>
+    <p>
+      テーブル形式ではなく、フラットなリスト形式でデータを取得したい場合は、
+      <code>GET /api/calendar-events/rollups/user/flat</code> または
+      <code>GET /api/calendar-events/rollups/tag/flat</code> を使います。<br />
+      クエリパラメータは通常のエンドポイントと同じです。
+    </p>
+    <p>
+      レスポンスは 2 次元のテーブルではなく、各セルを個別のオブジェクトとして並べたフラットな配列になります。
+      集計済みデータをスプレッドシートや外部ツールに読み込む際に便利です。
+    </p>
     <h3 id="example-5">
       <a class="anchor" href="#example-5">###</a>
       🔒 予定一覧の取得
